@@ -1,12 +1,53 @@
-# main links
+# # main links
+# main:
+#   - title: "Quick-Start Guide"
+#     url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+#   # - title: "About"
+#   #   url: https://mmistakes.github.io/minimal-mistakes/about/
+#   # - title: "Sample Posts"
+#   #   url: /year-archive/
+#   # - title: "Sample Collections"
+#   #   url: /collection-archive/
+#   # - title: "Sitemap"
+#   #   url: /sitemap/
 main:
-  - title: "Quick-Start Guide"
-    url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-  # - title: "About"
-  #   url: https://mmistakes.github.io/minimal-mistakes/about/
-  # - title: "Sample Posts"
-  #   url: /year-archive/
-  # - title: "Sample Collections"
-  #   url: /collection-archive/
-  # - title: "Sitemap"
-  #   url: /sitemap/
+  - title: "Home"
+    url: /
+  - title: "Paper List"
+    url: /papers/
+  - title: "Resources"
+    url: /resources/
+  - title: "Platform"
+    url: /platform/
+  - title: "Contact"
+    url: /contact/
+
+papers:
+  - title: "Paper Categories"
+    children:
+      - title: "Algorithm Design"
+        url: /papers/algorithm-design/
+      - title: "LLM Applications"
+        url: /papers/llm-applications/
+      - title: "Benchmarks"
+        url: /papers/benchmarks/
+
+resources:
+  - title: "Resource Types"
+    children:
+      - title: "Datasets"
+        url: /resources/datasets/
+      - title: "Code Repositories"
+        url: /resources/code-repos/
+      - title: "Tutorials"
+        url: /resources/tutorials/
+
+platform:
+  - title: "Platform Components"
+    children:
+      - title: "Overview"
+        url: /platform/overview/
+      - title: "API Documentation"
+        url: /platform/api-docs/
+      - title: "Examples"
+        url: /platform/examples/

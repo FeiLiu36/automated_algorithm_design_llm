@@ -1,0 +1,32 @@
+# _data/feature_row.yml
+- image_path: /assets/images/feature1.jpg
+  alt: "Algorithm Generation"
+  title: "Algorithm Generation"
+  excerpt: "Automatically generate algorithms for complex problems using LLMs."
+  url: "/features/algorithm-generation/"
+  btn_label: "Learn More"
+  btn_class: "btn--primary"
+
+- image_path: /assets/images/feature2.jpg
+  alt: "Code Optimization"
+  title: "Code Optimization"
+  excerpt: "Optimize existing algorithms for better performance and efficiency."
+  url: "/features/code-optimization/"
+  btn_label: "Learn More"
+  btn_class: "btn--primary"
+
+- image_path: /assets/images/feature3.jpg
+  alt: "Research Papers"
+  title: "Research Papers"
+  excerpt: "Explore our latest publications on automated algorithm design."
+  url: "/papers/"
+  btn_label: "View Papers"
+  btn_class: "btn--primary"
+
+- image_path: /assets/images/feature4.jpg
+  alt: "Benchmarks"
+  title: "Benchmarks"
+  excerpt: "Compare performance across different algorithm generation approaches."
+  url: "/benchmarks/"
+  btn_label: "View Benchmarks"
+  btn_class: "btn--primary"

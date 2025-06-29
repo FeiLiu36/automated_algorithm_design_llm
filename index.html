@@ -1,4 +1,131 @@
 ---
-layout: home
-author_profile: true
+layout: splash
+permalink: /
+hidden: true
+header:
+  overlay_color: "#5e616c"
+  overlay_image: /assets/images/banner.jpg
+  actions:
+    - label: "Get Started"
+      url: "/about/"
+excerpt: >
+  Advancing algorithm design through large language models.<br />
+  <small>Automated solutions for complex computational problems</small>
+feature_row:
+  - image_path: /assets/images/feature1.jpg
+    alt: "Algorithm Generation"
+    title: "Algorithm Generation"
+    excerpt: "Automatically generate algorithms for complex problems using LLMs."
+    url: "/features/algorithm-generation/"
+    btn_label: "Learn More"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/feature2.jpg
+    alt: "Code Optimization"
+    title: "Code Optimization"
+    excerpt: "Optimize existing algorithms for better performance and efficiency."
+    url: "/features/code-optimization/"
+    btn_label: "Learn More"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/feature3.jpg
+    alt: "Research Papers"
+    title: "Research Papers"
+    excerpt: "Explore our latest publications on automated algorithm design."
+    url: "/papers/"
+    btn_label: "View Papers"
+    btn_class: "btn--primary"
+  - image_path: /assets/images/feature4.jpg
+    alt: "Benchmarks"
+    title: "Benchmarks"
+    excerpt: "Compare performance across different algorithm generation approaches."
+    url: "/benchmarks/"
+    btn_label: "View Benchmarks"
+    btn_class: "btn--primary"
 ---
+
+{% include feature_row %}
+
+## Recent Publications
+
+<div class="publications-grid">
+  <div class="publication-card">
+    <img src="/assets/images/paper1.jpg" alt="Paper 1">
+    <h3>Automated Algorithm Synthesis with LLMs</h3>
+    <p>Authors et al. ICML 2025</p>
+    <div class="publication-links">
+      <a href="#" class="btn btn--small btn--info">Paper</a>
+      <a href="#" class="btn btn--small btn--info">Code</a>
+      <a href="#" class="btn btn--small btn--info">Demo</a>
+    </div>
+  </div>
+  
+  <div class="publication-card">
+    <img src="/assets/images/paper2.jpg" alt="Paper 2">
+    <h3>Optimizing Search Algorithms via LLM Guidance</h3>
+    <p>Authors et al. NeurIPS 2024</p>
+    <div class="publication-links">
+      <a href="#" class="btn btn--small btn--info">Paper</a>
+      <a href="#" class="btn btn--small btn--info">Code</a>
+    </div>
+  </div>
+  
+  <div class="publication-card">
+    <img src="/assets/images/paper3.jpg" alt="Paper 3">
+    <h3>Benchmarking LLM-based Algorithm Design</h3>
+    <p>Authors et al. ICLR 2024</p>
+    <div class="publication-links">
+      <a href="#" class="btn btn--small btn--info">Paper</a>
+      <a href="#" class="btn btn--small btn--info">Code</a>
+      <a href="#" class="btn btn--small btn--info">Dataset</a>
+    </div>
+  </div>
+</div>
+
+<style>
+.publications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.publication-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.publication-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.publication-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.publication-card h3 {
+  padding: 1rem 1rem 0.5rem;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.publication-card p {
+  padding: 0 1rem;
+  color: #666;
+  margin: 0 0 1rem;
+}
+
+.publication-links {
+  padding: 0 1rem 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn--small {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+}
+</style>
