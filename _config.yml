@@ -10,9 +10,9 @@ title_separator          : "|"
 subtitle                 : "Automated Algorithm Design with Large Language Models"
 name                     : "AutoAlgoLLM"
 description              : "Research project on automated algorithm design using large language models."
-url                      : "https://username.github.io" # Replace with your GitHub username
-baseurl                  : "/project-name" # Replace with your repository name
-repository               : "username/project-name" # Replace with your GitHub username/repo-name
+url                      : "https://FeiLiu36.github.io" # Replace with your GitHub username
+baseurl                  : "/automated_algorithm_design_llm" # Replace with your repository name
+repository               : "FeiLiu36/automated_algorithm_design_llm" # Replace with your GitHub username/repo-name
 teaser                   : "/assets/images/teaser.jpg" # Create a teaser image for your project
 logo                     : "/assets/images/logo.png" # Create a logo for your project
 masthead_title           : "AutoAlgoLLM"
@@ -46,7 +46,7 @@ footer:
   links:
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
-      url: "https://github.com/username/project-name" # Replace with your GitHub repository
+      url: "https://github.com/FeiLiu36/automated_algorithm_design_llm" # Replace with your GitHub repository
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
       url: # Add if applicable
