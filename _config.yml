@@ -28,7 +28,7 @@ header:
   overlay_filter         : 0.5  # Darken the banner image (0 to 1.0)
   actions:
     - label: "Learn More"
-      url: "/about/"
+      url: "/papers/"
 
 # SEO Related
 google_site_verification : # Add if needed
