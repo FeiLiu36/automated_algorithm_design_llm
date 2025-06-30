@@ -140,16 +140,6 @@ sidebar:
 | How Can Large Language Models Help Humans in Design and Manufacturing | Arxiv, July 2023      | -                                               | [paper](https://arxiv.org/pdf/2307.14377)                                              |
 | LLM4EDA: Emerging Progress in Large Language Models for Electronic Design Automation | Arxiv, Dec. 2023       | -                                               | [paper](https://arxiv.org/abs/2401.12224)                                         |
 
-
-## Related Collections
-
-| Collection                             | Link            |
-|-------------------------------------|-------------------------------------|
-| Awesome LLM                         | [Link](https://github.com/Hannibal046/Awesome-LLM) |
-| Foundation Models for Combinatorial Optimization | [Link](https://github.com/ai4co/awesome-fm4co) |
-| LLM for Planning                    | [Link](https://ai4society.github.io/LLM-Planning-Viz/) | 
-| MOO-ML-Papers                       | [Link](https://github.com/xzhang2523/awesome-moo-ml-papers) | 
-
 <style>
 .publications-grid {
   display: grid;
