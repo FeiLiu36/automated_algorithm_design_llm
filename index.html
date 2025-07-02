@@ -80,6 +80,22 @@ feature_row:
       </div>
     </div>
   </div>
+
+  <!-- Navigation Dots with Progress -->
+  <div class="banner-nav-dots">
+    <div class="nav-dot active" data-index="0">
+      <svg class="progress-circle" viewBox="0 0 36 36">
+        <circle class="circle-bg" cx="18" cy="18" r="16"></circle>
+        <circle class="circle-fill" cx="18" cy="18" r="16"></circle>
+      </svg>
+    </div>
+    <div class="nav-dot" data-index="1">
+      <svg class="progress-circle" viewBox="0 0 36 36">
+        <circle class="circle-bg" cx="18" cy="18" r="16"></circle>
+        <circle class="circle-fill" cx="18" cy="18" r="16"></circle>
+      </svg>
+    </div>
+  </div>
 </div>
 
 {% include feature_row %}
@@ -162,6 +178,53 @@ feature_row:
   transform: translateX(100%);
   transition: none;
 }
+  
+/* Navigation Dots */
+.banner-nav-dots {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+}
+
+.nav-dot {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+.nav-dot.active {
+  transform: scale(1.2);
+}
+
+.progress-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.3);
+  stroke-width: 2;
+}
+
+.circle-fill {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset linear;
+}
+
+.nav-dot.active .circle-fill {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 6s linear;
+}
 
 .publications-grid {
   display: grid;
@@ -215,46 +278,87 @@ feature_row:
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const slides = document.querySelectorAll('.page__hero--overlay');
+  const dots = document.querySelectorAll('.nav-dot');
   let currentSlide = 0;
   const slideInterval = 6000; // 6 seconds
+  let rotation;
   
   // Initialize first slide
   slides[0].classList.add('active');
+  dots[0].classList.add('active');
+  resetProgress(dots[0]);
   
-  function rotateSlides() {
-    const activeSlide = slides[currentSlide];
-    const nextSlide = slides[(currentSlide + 1) % slides.length];
+  function goToSlide(index) {
+    // Don't do anything if clicking on current slide
+    if (index === currentSlide) return;
+    
+    // Clear any existing timeouts/intervals
+    clearInterval(rotation);
+    dots[currentSlide].classList.remove('active');
+    resetProgress(dots[currentSlide]);
     
     // Animate current slide out to left
-    activeSlide.classList.add('slide-out');
+    slides[currentSlide].classList.add('slide-out');
     
     // Animate next slide in from right
-    nextSlide.classList.add('active');
+    slides[index].classList.add('active');
+    
+    // Update dot states
+    dots[index].classList.add('active');
+    resetProgress(dots[index]);
+    startProgress(dots[index]);
     
     // After animation completes
     setTimeout(() => {
       // Reset current slide position to right (without animation)
-      activeSlide.classList.remove('active', 'slide-out');
-      activeSlide.classList.add('reset-position');
+      slides[currentSlide].classList.remove('active', 'slide-out');
+      slides[currentSlide].classList.add('reset-position');
       
       // Remove reset class after applying position
       setTimeout(() => {
-        activeSlide.classList.remove('reset-position');
+        slides[currentSlide].classList.remove('reset-position');
       }, 10);
       
       // Update current slide index
-      currentSlide = (currentSlide + 1) % slides.length;
+      currentSlide = index;
+      
+      // Restart auto rotation
+      startRotation();
     }, 800); // Match CSS transition duration
   }
   
-  // Start rotation
-  const rotation = setInterval(rotateSlides, slideInterval);
+  function startRotation() {
+    rotation = setInterval(() => {
+      const nextSlide = (currentSlide + 1) % slides.length;
+      goToSlide(nextSlide);
+    }, slideInterval);
+  }
+  
+  function resetProgress(dot) {
+    const circle = dot.querySelector('.circle-fill');
+    circle.style.strokeDashoffset = '100';
+    circle.style.transition = 'none';
+  }
+  
+  function startProgress(dot) {
+    const circle = dot.querySelector('.circle-fill');
+    // Force reflow to reset transition
+    void circle.offsetWidth;
+    circle.style.transition = 'stroke-dashoffset 6s linear';
+    circle.style.strokeDashoffset = '0';
+  }
+  
+  // Add click handlers for dots
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToSlide(index));
+  });
+  
+  // Start auto rotation
+  startRotation();
   
   // Pause on hover
   const banner = document.querySelector('.page-banner');
   banner.addEventListener('mouseenter', () => clearInterval(rotation));
-  banner.addEventListener('mouseleave', () => {
-    rotation = setInterval(rotateSlides, slideInterval);
-  });
+  banner.addEventListener('mouseleave', startRotation);
 });
 </script>
