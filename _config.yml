@@ -25,6 +25,9 @@ search_provider          : lunr
 lunr:
   search_within_pages    : true
 
+# Social Sharing
+twitter:
+  username               :
 # Banner Settings
 header:
   overlay_image          : "/assets/images/banner.jpg"  # Add a banner image
