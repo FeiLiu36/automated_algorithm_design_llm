@@ -43,6 +43,7 @@ feature_row:
 ---
 
 {% capture bg_image %}{{ "/assets/images/banner.jpg" | relative_url }}{% endcapture %}
+{% capture bg_image1 %}{{ "/assets/images/banner1.jpg" | relative_url }}{% endcapture %}
 {% capture action %}{{ "/papers/" | relative_url }}{% endcapture %}
 
 <div class="page-banner">
@@ -64,7 +65,7 @@ feature_row:
     </div>
     
     <!-- Slide 2 -->
-    <div class="page__hero--overlay" style="background-image: url('{{ bg_image }}')">
+    <div class="page__hero--overlay" style="background-image: url('{{ bg_image1 }}')">
       <div class="wrapper">
         <h1 id="page-title" class="page__title" itemprop="headline">
           {{ site.title }}
