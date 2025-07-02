@@ -178,54 +178,6 @@ feature_row:
   transform: translateX(100%);
   transition: none;
 }
-  
-/* Navigation Dots with improved spacing */
-.banner-nav-dots {
-  position: absolute;
-  bottom: 40px; /* Increased from 20px */
-  right: 20px;
-  z-index: 10;
-  display: flex;
-  gap: 12px; /* Increased from 10px */
-}
-
-.nav-dot {
-  width: 18px; /* Slightly larger */
-  height: 18px;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.3s ease;
-}
-
-.nav-dot.active {
-  transform: scale(1.3); /* Slightly more prominent */
-}
-
-.progress-circle {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.circle-bg {
-  fill: none;
-  stroke: rgba(255,255,255,0.3);
-  stroke-width: 2;
-}
-
-.circle-fill {
-  fill: none;
-  stroke: white;
-  stroke-width: 2;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset linear;
-}
-
-.nav-dot.active .circle-fill {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 6s linear;
-}
 
 .publication-card:hover {
   transform: translateY(-5px);
@@ -269,39 +221,35 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentSlide = 0;
   const slideInterval = 6000;
   let rotation;
-  
-  // Initialize with immediate progress animation
+  let animationStartTime = Date.now();
+
+  // Initialize with proper progress animation
   function initSlider() {
     // Set initial slide states
     slides[0].classList.add('active');
     slides[0].style.transform = 'translateX(0)';
     
-    // Initialize first dot's progress circle
+    // Initialize first dot's progress circle with proper timing
     const firstDot = dots[0];
     const firstCircle = firstDot.querySelector('.circle-fill');
     
     firstDot.classList.add('active');
     
-    // Calculate elapsed time to sync progress
-    const elapsed = Date.now() - animationStartTime;
-    const progress = Math.min(elapsed / slideInterval, 1);
-    const remaining = (1 - progress) * 100;
-    
-    // Set initial state
+    // Reset animation
     firstCircle.style.strokeDashoffset = '100';
     firstCircle.style.transition = 'none';
     void firstCircle.offsetWidth; // Force reflow
     
-    // Start animation from current progress
-    firstCircle.style.transition = `stroke-dashoffset ${(slideInterval - elapsed)/1000}s linear`;
-    firstCircle.style.strokeDashoffset = `${remaining}`;
+    // Start animation
+    firstCircle.style.transition = 'stroke-dashoffset 6s linear';
+    firstCircle.style.strokeDashoffset = '0';
     
     // Initialize other slides
     for (let i = 1; i < slides.length; i++) {
       slides[i].style.transform = 'translateX(100%)';
     }
   }
-    
+
   // Transition to specific slide
   function goToSlide(index) {
     if (index === currentSlide) return;
@@ -353,20 +301,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 800);
   }
   
-  // Start rotation
+  // Start auto rotation
   function startRotation() {
-    animationStartTime = Date.now(); // Reset timer
+    animationStartTime = Date.now();
+    clearInterval(rotation);
     rotation = setInterval(() => {
       const nextSlide = (currentSlide + 1) % slides.length;
       goToSlide(nextSlide);
     }, slideInterval);
   }
   
-  // Initialize immediately
-  animationStartTime = Date.now();
-  initSlider();
-  startRotation();
-
   // Event listeners
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => goToSlide(index));
@@ -376,5 +320,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const banner = document.querySelector('.page-banner');
   banner.addEventListener('mouseenter', () => clearInterval(rotation));
   banner.addEventListener('mouseleave', startRotation);
+  
+  // Initialize slider
+  initSlider();
+  startRotation();
+  
+  // Ensure animation plays after page load
+  window.addEventListener('load', function() {
+    const firstCircle = dots[0].querySelector('.circle-fill');
+    firstCircle.style.strokeDashoffset = '100';
+    firstCircle.style.transition = 'none';
+    void firstCircle.offsetWidth;
+    firstCircle.style.transition = 'stroke-dashoffset 6s linear';
+    firstCircle.style.strokeDashoffset = '0';
+  });
 });
 </script>
