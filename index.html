@@ -179,26 +179,26 @@ feature_row:
   transition: none;
 }
   
-/* Navigation Dots */
+/* Navigation Dots with improved spacing */
 .banner-nav-dots {
   position: absolute;
-  bottom: 20px;
+  bottom: 40px; /* Increased from 20px */
   right: 20px;
   z-index: 10;
   display: flex;
-  gap: 10px;
+  gap: 12px; /* Increased from 10px */
 }
 
 .nav-dot {
-  width: 16px;
-  height: 16px;
+  width: 18px; /* Slightly larger */
+  height: 18px;
   cursor: pointer;
   position: relative;
   transition: transform 0.3s ease;
 }
 
 .nav-dot.active {
-  transform: scale(1.2);
+  transform: scale(1.3); /* Slightly more prominent */
 }
 
 .progress-circle {
@@ -225,20 +225,6 @@ feature_row:
 .nav-dot.active .circle-fill {
   stroke-dashoffset: 0;
   transition: stroke-dashoffset 6s linear;
-}
-
-.publications-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.publication-card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .publication-card:hover {
@@ -277,112 +263,119 @@ feature_row:
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const slides = document.querySelectorAll('.page__hero--overlay');
-  const dots = document.querySelectorAll('.nav-dot');
-  let currentSlide = 0;
-  const slideInterval = 6000; // 6 seconds
-  let rotation;
-  
-  // Preload all images
-  function preloadImages() {
-    slides.forEach(slide => {
-      const img = new Image();
-      img.src = slide.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
-    });
-  }
-  
-  // Initialize slider with immediate progress circle
-  function initSlider() {
-    slides[0].classList.add('active');
-    dots[0].classList.add('active');
-    startProgress(dots[0]); // Start progress immediately
-    preloadImages();
+  document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.page__hero--overlay');
+    const dots = document.querySelectorAll('.nav-dot');
+    let currentSlide = 0;
+    const slideInterval = 6000; // 6 seconds
+    let rotation;
     
-    // Initialize all other slides off-screen
-    for (let i = 1; i < slides.length; i++) {
-      slides[i].style.transform = 'translateX(100%)';
+    // Preload all images
+    function preloadImages() {
+      slides.forEach(slide => {
+        const img = new Image();
+        img.src = slide.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+      });
     }
-  }
-  
-  // Transition to specific slide
-  function goToSlide(index) {
-    if (index === currentSlide) return;
     
-    // Clear existing interval
-    clearInterval(rotation);
-    
-    // Update slide states with overlap
-    const current = slides[currentSlide];
-    const next = slides[index];
-    
-    // Bring next slide to right side before animating
-    next.style.transform = 'translateX(100%)';
-    next.style.transition = 'none';
-    
-    // Force reflow
-    void next.offsetWidth;
-    
-    // Start animations
-    next.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
-    current.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
-    
-    current.style.transform = 'translateX(-100%)';
-    next.style.transform = 'translateX(0)';
-    next.classList.add('active');
-    
-    // Update dot states
-    dots[currentSlide].classList.remove('active');
-    resetProgress(dots[currentSlide]);
-    dots[index].classList.add('active');
-    resetProgress(dots[index]);
-    startProgress(dots[index]);
-    
-    // Complete transition
-    setTimeout(() => {
-      current.classList.remove('active');
-      current.style.transform = 'translateX(100%)';
-      current.style.transition = 'none';
+    // Initialize slider with immediate progress circle
+    function initSlider() {
+      // Set initial slide states
+      slides[0].classList.add('active');
+      slides[0].style.transform = 'translateX(0)';
       
-      currentSlide = index;
-      startRotation();
-    }, 800);
-  }
-  
-  // Start auto rotation
-  function startRotation() {
-    rotation = setInterval(() => {
-      const nextSlide = (currentSlide + 1) % slides.length;
-      goToSlide(nextSlide);
-    }, slideInterval);
-  }
-  
-  // Progress circle controls
-  function resetProgress(dot) {
-    const circle = dot.querySelector('.circle-fill');
-    circle.style.strokeDashoffset = '100';
-    circle.style.transition = 'none';
-  }
-  
-  function startProgress(dot) {
-    const circle = dot.querySelector('.circle-fill');
-    void circle.offsetWidth; // Trigger reflow
-    circle.style.transition = 'stroke-dashoffset 6s linear';
-    circle.style.strokeDashoffset = '0';
-  }
-  
-  // Event listeners
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => goToSlide(index));
+      // Initialize all other slides off-screen
+      for (let i = 1; i < slides.length; i++) {
+        slides[i].style.transform = 'translateX(100%)';
+      }
+      
+      // Start progress circle immediately with animation
+      dots[0].classList.add('active');
+      const firstCircle = dots[0].querySelector('.circle-fill');
+      // Reset to full circle first
+      firstCircle.style.strokeDashoffset = '100';
+      firstCircle.style.transition = 'none';
+      // Force reflow
+      void firstCircle.offsetWidth;
+      // Start animation
+      firstCircle.style.transition = 'stroke-dashoffset 6s linear';
+      firstCircle.style.strokeDashoffset = '0';
+      
+      preloadImages();
+    }
+    
+    // Transition to specific slide
+    function goToSlide(index) {
+      if (index === currentSlide) return;
+      
+      // Clear existing interval
+      clearInterval(rotation);
+      
+      const current = slides[currentSlide];
+      const next = slides[index];
+      
+      // Reset progress for current dot
+      dots[currentSlide].classList.remove('active');
+      const currentCircle = dots[currentSlide].querySelector('.circle-fill');
+      currentCircle.style.strokeDashoffset = '100';
+      currentCircle.style.transition = 'none';
+      
+      // Start progress for next dot
+      dots[index].classList.add('active');
+      const nextCircle = dots[index].querySelector('.circle-fill');
+      nextCircle.style.strokeDashoffset = '100';
+      nextCircle.style.transition = 'none';
+      void nextCircle.offsetWidth; // Force reflow
+      nextCircle.style.transition = 'stroke-dashoffset 6s linear';
+      nextCircle.style.strokeDashoffset = '0';
+      
+      // Prepare next slide
+      next.style.transform = 'translateX(100%)';
+      next.style.transition = 'none';
+      void next.offsetWidth; // Force reflow
+      
+      // Start animations
+      next.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+      current.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+      
+      current.classList.add('slide-out');
+      next.classList.add('active');
+      
+      current.style.transform = 'translateX(-100%)';
+      next.style.transform = 'translateX(0)';
+      
+      // Complete transition
+      setTimeout(() => {
+        current.classList.remove('active', 'slide-out');
+        current.style.transform = 'translateX(100%)';
+        current.style.transition = 'none';
+        
+        currentSlide = index;
+        startRotation();
+      }, 800);
+    }
+    
+    // Start auto rotation
+    function startRotation() {
+      clearInterval(rotation); // Clear any existing interval
+      rotation = setInterval(() => {
+        const nextSlide = (currentSlide + 1) % slides.length;
+        goToSlide(nextSlide);
+      }, slideInterval);
+    }
+    
+    // Event listeners
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goToSlide(index));
+    });
+    
+    // Pause on hover
+    const banner = document.querySelector('.page-banner');
+    banner.addEventListener('mouseenter', () => clearInterval(rotation));
+    banner.addEventListener('mouseleave', startRotation);
+    
+    // Initialize slider
+    initSlider();
+    startRotation();
   });
-  
-  // Pause on hover
-  const banner = document.querySelector('.page-banner');
-  banner.addEventListener('mouseenter', () => clearInterval(rotation));
-  banner.addEventListener('mouseleave', startRotation);
-  
-  // Initialize slider
-  initSlider();
-  startRotation();
-});
-</script>
+  </script>
