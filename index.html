@@ -65,7 +65,7 @@ feature_row:
     </div>
     
     <!-- Slide 2 -->
-    <div class="page__hero--overlay next" style="background-image: url('{{ bg_image1 }}')">
+    <div class="page__hero--overlay" style="background-image: url('{{ bg_image1 }}')">
       <div class="wrapper">
         <h1 id="page-title" class="page__title" itemprop="headline">
           {{ site.title }}
@@ -141,10 +141,12 @@ feature_row:
   width: 100%;
   height: 100%;
   background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-    will-change: transform;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+  transform: translateX(100%);
+  z-index: 1;
 }
 
 .page__hero--overlay.active {
@@ -152,13 +154,13 @@ feature_row:
   z-index: 2;
 }
 
-.page__hero--overlay.next {
-  transform: translateX(100%);
-  z-index: 1;
-}
-
 .page__hero--overlay.slide-out {
   transform: translateX(-100%);
+}
+
+.page__hero--overlay.reset-position {
+  transform: translateX(100%);
+  transition: none;
 }
 
 .publications-grid {
@@ -216,31 +218,33 @@ document.addEventListener('DOMContentLoaded', function() {
   let currentSlide = 0;
   const slideInterval = 6000; // 6 seconds
   
-  // Initialize - first slide visible, second ready to slide in from right
+  // Initialize first slide
   slides[0].classList.add('active');
-  slides[1].classList.add('next');
   
   function rotateSlides() {
     const activeSlide = slides[currentSlide];
     const nextSlide = slides[(currentSlide + 1) % slides.length];
-    const followingSlide = slides[(currentSlide + 2) % slides.length];
     
-    // Animate current slide out to left and next slide in from right
+    // Animate current slide out to left
     activeSlide.classList.add('slide-out');
+    
+    // Animate next slide in from right
     nextSlide.classList.add('active');
-    nextSlide.classList.remove('next');
     
-    // Prepare the slide after next to come in from right
-    followingSlide.classList.add('next');
-    followingSlide.style.transform = 'translateX(100%)';
-    
-    // Reset states after animation completes
+    // After animation completes
     setTimeout(() => {
+      // Reset current slide position to right (without animation)
       activeSlide.classList.remove('active', 'slide-out');
-      activeSlide.style.transform = 'translateX(100%)';
+      activeSlide.classList.add('reset-position');
       
+      // Remove reset class after applying position
+      setTimeout(() => {
+        activeSlide.classList.remove('reset-position');
+      }, 10);
+      
+      // Update current slide index
       currentSlide = (currentSlide + 1) % slides.length;
-    }, 800); // Match duration with CSS transition
+    }, 800); // Match CSS transition duration
   }
   
   // Start rotation
@@ -253,4 +257,4 @@ document.addEventListener('DOMContentLoaded', function() {
     rotation = setInterval(rotateSlides, slideInterval);
   });
 });
-  </script>
+</script>
