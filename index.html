@@ -2,7 +2,7 @@
 layout: splash
 permalink: /
 hidden: true
-header:
+<!-- header:
   overlay_color: "#5e616c"
   overlay_image: /assets/images/banner.jpg
   actions:
@@ -10,7 +10,7 @@ header:
       url: "/papers/"
 excerpt: >
   Advancing algorithm design through large language models.<br />
-  <small>Automated solutions for complex computational problems</small>
+  <small>Automated solutions for complex computational problems</small> -->
 feature_row:
   - image_path: /assets/images/feature1.jpg
     alt: "Algorithm Generation"
@@ -41,6 +41,22 @@ feature_row:
     btn_label: "View Benchmarks"
     btn_class: "btn--primary"
 ---
+{% capture bg_image %}{{ "/assets/images/banner.jpg" | relative_url }}{% endcapture %}
+{% capture action %}{{ "/papers/" | relative_url }}{% endcapture %}
+<div class="page__hero--overlay" style="background-image: url('{{ bg_image }}')">
+  <div class="wrapper">
+    <h1 id="page-title" class="page__title" itemprop="headline">
+      {{ site.title }}
+    </h1>
+    <p class="page__lead">
+      dvancing algorithm design through large language models.<br />
+      <small>Automated solutions for complex computational problems</small>
+    </p>
+    <p>
+      <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started</a>
+    </p>
+  </div>
+</div>
 
 {% include feature_row %}
 
