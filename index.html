@@ -178,6 +178,54 @@ feature_row:
   transform: translateX(100%);
   transition: none;
 }
+  
+/* Navigation Dots */
+.banner-nav-dots {
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
+  z-index: 10;
+  display: flex;
+  gap: 12px;
+}
+
+.nav-dot {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.nav-dot.active {
+  transform: scale(1.3);
+}
+
+.progress-circle {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.3);
+  stroke-width: 2;
+}
+
+.circle-fill {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  transition: stroke-dashoffset linear;
+}
+
+.nav-dot.active .circle-fill {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 6s linear;
+}
 
 .publication-card:hover {
   transform: translateY(-5px);
