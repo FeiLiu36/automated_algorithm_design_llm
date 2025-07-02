@@ -44,32 +44,34 @@ feature_row:
 
 {% capture bg_image %}{{ "/assets/images/banner.jpg" | relative_url }}{% endcapture %}
 {% capture action %}{{ "/papers/" | relative_url }}{% endcapture %}
-<div class="page__hero--overlay active" style="background-image: url('{{ bg_image }}')">
-  <div class="wrapper">
-    <h1 id="page-title" class="page__title" itemprop="headline">
-      {{ site.title }}
-    </h1>
-    <p class="page__lead">
-      dvancing algorithm design through large language models.<br />
-      <small>Automated solutions for complex computational problems</small>
-    </p>
-    <p>
-      <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started</a>
-    </p>
+<div class="page__hero-backgrounds">
+  <div class="page__hero--overlay active" style="background-image: url('{{ bg_image }}');  opacity: 1;">
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        {{ site.title }}
+      </h1>
+      <p class="page__lead">
+        dvancing algorithm design through large language models.<br />
+        <small>Automated solutions for complex computational problems</small>
+      </p>
+      <p>
+        <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started</a>
+      </p>
+    </div>
   </div>
-</div>
-<div class="page__hero--overlay" style="background-image: url('{{ bg_image }}')">
-  <div class="wrapper">
-    <h1 id="page-title" class="page__title" itemprop="headline">
-      {{ site.title }}
-    </h1>
-    <p class="page__lead">
-      dvancing algorithm design through large language models.<br />
-      <small>Automated solutions for complex computational problems</small>
-    </p>
-    <p>
-      <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started2</a>
-    </p>
+  <div class="page__hero--overlay" style="background-image: url('{{ bg_image }}'); opacity: 0;">
+    <div class="wrapper">
+      <h1 id="page-title" class="page__title" itemprop="headline">
+        {{ site.title }}
+      </h1>
+      <p class="page__lead">
+        dvancing algorithm design through large language models.<br />
+        <small>Automated solutions for complex computational problems</small>
+      </p>
+      <p>
+        <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started2</a>
+      </p>
+    </div>
   </div>
 </div>
 
@@ -112,6 +114,11 @@ feature_row:
 </div>
 
 <style>
+.page__hero-backgrounds {
+  position: relative; /* Essential for positioning */
+  overflow: hidden;
+}
+
 .page__hero--overlay {
   opacity: 0;
   transition: opacity 1s ease;
