@@ -276,21 +276,25 @@ document.addEventListener('DOMContentLoaded', function() {
     slides[0].classList.add('active');
     slides[0].style.transform = 'translateX(0)';
     
-    // Initialize progress circle with immediate animation
+    // Initialize first dot's progress circle
     const firstDot = dots[0];
     const firstCircle = firstDot.querySelector('.circle-fill');
     
-    // Reset to initial state
     firstDot.classList.add('active');
+    
+    // Calculate elapsed time to sync progress
+    const elapsed = Date.now() - animationStartTime;
+    const progress = Math.min(elapsed / slideInterval, 1);
+    const remaining = (1 - progress) * 100;
+    
+    // Set initial state
     firstCircle.style.strokeDashoffset = '100';
     firstCircle.style.transition = 'none';
+    void firstCircle.offsetWidth; // Force reflow
     
-    // Force reflow before starting animation
-    void firstCircle.offsetWidth;
-    
-    // Start animation
-    firstCircle.style.transition = 'stroke-dashoffset 6s linear';
-    firstCircle.style.strokeDashoffset = '0';
+    // Start animation from current progress
+    firstCircle.style.transition = `stroke-dashoffset ${(slideInterval - elapsed)/1000}s linear`;
+    firstCircle.style.strokeDashoffset = `${remaining}`;
     
     // Initialize other slides
     for (let i = 1; i < slides.length; i++) {
@@ -349,15 +353,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 800);
   }
   
-  // Start auto rotation
+  // Start rotation
   function startRotation() {
-    clearInterval(rotation); // Clear any existing interval
+    animationStartTime = Date.now(); // Reset timer
     rotation = setInterval(() => {
       const nextSlide = (currentSlide + 1) % slides.length;
       goToSlide(nextSlide);
     }, slideInterval);
   }
   
+  // Initialize immediately
+  animationStartTime = Date.now();
+  initSlider();
+  startRotation();
+
   // Event listeners
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => goToSlide(index));
@@ -367,9 +376,5 @@ document.addEventListener('DOMContentLoaded', function() {
   const banner = document.querySelector('.page-banner');
   banner.addEventListener('mouseenter', () => clearInterval(rotation));
   banner.addEventListener('mouseleave', startRotation);
-  
-  // Initialize slider
-  initSlider();
-  startRotation();
 });
 </script>
