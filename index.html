@@ -263,119 +263,113 @@ feature_row:
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const slides = document.querySelectorAll('.page__hero--overlay');
-    const dots = document.querySelectorAll('.nav-dot');
-    let currentSlide = 0;
-    const slideInterval = 6000; // 6 seconds
-    let rotation;
+document.addEventListener('DOMContentLoaded', function() {
+  const slides = document.querySelectorAll('.page__hero--overlay');
+  const dots = document.querySelectorAll('.nav-dot');
+  let currentSlide = 0;
+  const slideInterval = 6000;
+  let rotation;
+  
+  // Initialize with immediate progress animation
+  function initSlider() {
+    // Set initial slide states
+    slides[0].classList.add('active');
+    slides[0].style.transform = 'translateX(0)';
     
-    // Preload all images
-    function preloadImages() {
-      slides.forEach(slide => {
-        const img = new Image();
-        img.src = slide.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
-      });
+    // Initialize progress circle with immediate animation
+    const firstDot = dots[0];
+    const firstCircle = firstDot.querySelector('.circle-fill');
+    
+    // Reset to initial state
+    firstDot.classList.add('active');
+    firstCircle.style.strokeDashoffset = '100';
+    firstCircle.style.transition = 'none';
+    
+    // Force reflow before starting animation
+    void firstCircle.offsetWidth;
+    
+    // Start animation
+    firstCircle.style.transition = 'stroke-dashoffset 6s linear';
+    firstCircle.style.strokeDashoffset = '0';
+    
+    // Initialize other slides
+    for (let i = 1; i < slides.length; i++) {
+      slides[i].style.transform = 'translateX(100%)';
     }
+  }
     
-    // Initialize slider with immediate progress circle
-    function initSlider() {
-      // Set initial slide states
-      slides[0].classList.add('active');
-      slides[0].style.transform = 'translateX(0)';
-      
-      // Initialize all other slides off-screen
-      for (let i = 1; i < slides.length; i++) {
-        slides[i].style.transform = 'translateX(100%)';
-      }
-      
-      // Start progress circle immediately with animation
-      dots[0].classList.add('active');
-      const firstCircle = dots[0].querySelector('.circle-fill');
-      // Reset to full circle first
-      firstCircle.style.strokeDashoffset = '100';
-      firstCircle.style.transition = 'none';
-      // Force reflow
-      void firstCircle.offsetWidth;
-      // Start animation
-      firstCircle.style.transition = 'stroke-dashoffset 6s linear';
-      firstCircle.style.strokeDashoffset = '0';
-      
-      preloadImages();
-    }
+  // Transition to specific slide
+  function goToSlide(index) {
+    if (index === currentSlide) return;
     
-    // Transition to specific slide
-    function goToSlide(index) {
-      if (index === currentSlide) return;
-      
-      // Clear existing interval
-      clearInterval(rotation);
-      
-      const current = slides[currentSlide];
-      const next = slides[index];
-      
-      // Reset progress for current dot
-      dots[currentSlide].classList.remove('active');
-      const currentCircle = dots[currentSlide].querySelector('.circle-fill');
-      currentCircle.style.strokeDashoffset = '100';
-      currentCircle.style.transition = 'none';
-      
-      // Start progress for next dot
-      dots[index].classList.add('active');
-      const nextCircle = dots[index].querySelector('.circle-fill');
-      nextCircle.style.strokeDashoffset = '100';
-      nextCircle.style.transition = 'none';
-      void nextCircle.offsetWidth; // Force reflow
-      nextCircle.style.transition = 'stroke-dashoffset 6s linear';
-      nextCircle.style.strokeDashoffset = '0';
-      
-      // Prepare next slide
-      next.style.transform = 'translateX(100%)';
-      next.style.transition = 'none';
-      void next.offsetWidth; // Force reflow
-      
-      // Start animations
-      next.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
-      current.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
-      
-      current.classList.add('slide-out');
-      next.classList.add('active');
-      
-      current.style.transform = 'translateX(-100%)';
-      next.style.transform = 'translateX(0)';
-      
-      // Complete transition
-      setTimeout(() => {
-        current.classList.remove('active', 'slide-out');
-        current.style.transform = 'translateX(100%)';
-        current.style.transition = 'none';
-        
-        currentSlide = index;
-        startRotation();
-      }, 800);
-    }
+    // Clear existing interval
+    clearInterval(rotation);
     
-    // Start auto rotation
-    function startRotation() {
-      clearInterval(rotation); // Clear any existing interval
-      rotation = setInterval(() => {
-        const nextSlide = (currentSlide + 1) % slides.length;
-        goToSlide(nextSlide);
-      }, slideInterval);
-    }
+    const current = slides[currentSlide];
+    const next = slides[index];
     
-    // Event listeners
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => goToSlide(index));
-    });
+    // Reset progress for current dot
+    dots[currentSlide].classList.remove('active');
+    const currentCircle = dots[currentSlide].querySelector('.circle-fill');
+    currentCircle.style.strokeDashoffset = '100';
+    currentCircle.style.transition = 'none';
     
-    // Pause on hover
-    const banner = document.querySelector('.page-banner');
-    banner.addEventListener('mouseenter', () => clearInterval(rotation));
-    banner.addEventListener('mouseleave', startRotation);
+    // Start progress for next dot
+    dots[index].classList.add('active');
+    const nextCircle = dots[index].querySelector('.circle-fill');
+    nextCircle.style.strokeDashoffset = '100';
+    nextCircle.style.transition = 'none';
+    void nextCircle.offsetWidth; // Force reflow
+    nextCircle.style.transition = 'stroke-dashoffset 6s linear';
+    nextCircle.style.strokeDashoffset = '0';
     
-    // Initialize slider
-    initSlider();
-    startRotation();
+    // Prepare next slide
+    next.style.transform = 'translateX(100%)';
+    next.style.transition = 'none';
+    void next.offsetWidth; // Force reflow
+    
+    // Start animations
+    next.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+    current.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+    
+    current.classList.add('slide-out');
+    next.classList.add('active');
+    
+    current.style.transform = 'translateX(-100%)';
+    next.style.transform = 'translateX(0)';
+    
+    // Complete transition
+    setTimeout(() => {
+      current.classList.remove('active', 'slide-out');
+      current.style.transform = 'translateX(100%)';
+      current.style.transition = 'none';
+      
+      currentSlide = index;
+      startRotation();
+    }, 800);
+  }
+  
+  // Start auto rotation
+  function startRotation() {
+    clearInterval(rotation); // Clear any existing interval
+    rotation = setInterval(() => {
+      const nextSlide = (currentSlide + 1) % slides.length;
+      goToSlide(nextSlide);
+    }, slideInterval);
+  }
+  
+  // Event listeners
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => goToSlide(index));
   });
-  </script>
+  
+  // Pause on hover
+  const banner = document.querySelector('.page-banner');
+  banner.addEventListener('mouseenter', () => clearInterval(rotation));
+  banner.addEventListener('mouseleave', startRotation);
+  
+  // Initialize slider
+  initSlider();
+  startRotation();
+});
+</script>
