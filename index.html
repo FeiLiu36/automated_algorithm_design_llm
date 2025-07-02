@@ -283,50 +283,62 @@ document.addEventListener('DOMContentLoaded', function() {
   const slideInterval = 6000; // 6 seconds
   let rotation;
   
-  // Initialize first slide
-  slides[0].classList.add('active');
-  dots[0].classList.add('active');
-  resetProgress(dots[0]);
+  // Preload all images
+  function preloadImages() {
+    slides.forEach(slide => {
+      const img = new Image();
+      img.src = slide.style.backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+    });
+  }
   
+  // Initialize first slide
+  function initSlider() {
+    slides[0].classList.add('active');
+    dots[0].classList.add('active');
+    resetProgress(dots[0]);
+    startProgress(dots[0]);
+    preloadImages();
+  }
+  
+  // Transition to specific slide
   function goToSlide(index) {
-    // Don't do anything if clicking on current slide
     if (index === currentSlide) return;
     
-    // Clear any existing timeouts/intervals
+    // Create transition overlay
+    const tempOverlay = document.createElement('div');
+    tempOverlay.className = 'transition-overlay';
+    document.querySelector('.page__hero-backgrounds').appendChild(tempOverlay);
+    
+    // Clear existing interval
     clearInterval(rotation);
-    dots[currentSlide].classList.remove('active');
-    resetProgress(dots[currentSlide]);
     
-    // Animate current slide out to left
+    // Update slide states
     slides[currentSlide].classList.add('slide-out');
-    
-    // Animate next slide in from right
     slides[index].classList.add('active');
     
     // Update dot states
+    dots[currentSlide].classList.remove('active');
+    resetProgress(dots[currentSlide]);
     dots[index].classList.add('active');
     resetProgress(dots[index]);
     startProgress(dots[index]);
     
-    // After animation completes
+    // Complete transition
     setTimeout(() => {
-      // Reset current slide position to right (without animation)
       slides[currentSlide].classList.remove('active', 'slide-out');
       slides[currentSlide].classList.add('reset-position');
       
-      // Remove reset class after applying position
       setTimeout(() => {
         slides[currentSlide].classList.remove('reset-position');
+        tempOverlay.remove();
       }, 10);
       
-      // Update current slide index
       currentSlide = index;
-      
-      // Restart auto rotation
       startRotation();
-    }, 800); // Match CSS transition duration
+    }, 800);
   }
   
+  // Start auto rotation
   function startRotation() {
     rotation = setInterval(() => {
       const nextSlide = (currentSlide + 1) % slides.length;
@@ -334,6 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, slideInterval);
   }
   
+  // Progress circle controls
   function resetProgress(dot) {
     const circle = dot.querySelector('.circle-fill');
     circle.style.strokeDashoffset = '100';
@@ -342,23 +355,23 @@ document.addEventListener('DOMContentLoaded', function() {
   
   function startProgress(dot) {
     const circle = dot.querySelector('.circle-fill');
-    // Force reflow to reset transition
-    void circle.offsetWidth;
+    void circle.offsetWidth; // Trigger reflow
     circle.style.transition = 'stroke-dashoffset 6s linear';
     circle.style.strokeDashoffset = '0';
   }
   
-  // Add click handlers for dots
+  // Event listeners
   dots.forEach((dot, index) => {
     dot.addEventListener('click', () => goToSlide(index));
   });
-  
-  // Start auto rotation
-  startRotation();
   
   // Pause on hover
   const banner = document.querySelector('.page-banner');
   banner.addEventListener('mouseenter', () => clearInterval(rotation));
   banner.addEventListener('mouseleave', startRotation);
+  
+  // Initialize slider
+  initSlider();
+  startRotation();
 });
 </script>
