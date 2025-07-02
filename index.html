@@ -135,19 +135,27 @@ feature_row:
 
 .page__hero--overlay {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out;
+  transform: translateX(100%);
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1;
 }
 
 .page__hero--overlay.active {
-  opacity: 1;
+  transform: translateX(0);
   z-index: 2;
+}
+
+/* Animation for sliding out */
+.page__hero--overlay.leaving {
+  transform: translateX(-100%);
+  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page__hero--overlay .wrapper {
@@ -212,20 +220,29 @@ document.addEventListener('DOMContentLoaded', function() {
   const slideInterval = 5000; // 5 seconds
   
   function rotateSlides() {
-    // Fade out current slide
+    // Mark current slide as leaving
+    slides[currentSlide].classList.add('leaving');
     slides[currentSlide].classList.remove('active');
     
     // Move to next slide
     currentSlide = (currentSlide + 1) % slides.length;
     
-    // Fade in next slide
+    // Activate new slide
     slides[currentSlide].classList.add('active');
+    
+    // Reset leaving class after animation
+    setTimeout(() => {
+      document.querySelectorAll('.page__hero--overlay.leaving').forEach(slide => {
+        slide.classList.remove('leaving');
+      });
+    }, 1000);
   }
   
   // Initialize - ensure first slide is visible
   slides[currentSlide].classList.add('active');
+  slides[currentSlide].style.transform = 'translateX(0)';
   
   // Start rotation
   setInterval(rotateSlides, slideInterval);
 });
-</script>
+  </script>
