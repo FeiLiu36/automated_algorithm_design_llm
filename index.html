@@ -41,9 +41,10 @@ feature_row:
     btn_label: "View Benchmarks"
     btn_class: "btn--primary"
 ---
+
 {% capture bg_image %}{{ "/assets/images/banner.jpg" | relative_url }}{% endcapture %}
 {% capture action %}{{ "/papers/" | relative_url }}{% endcapture %}
-<div class="page__hero--overlay" style="background-image: url('{{ bg_image }}')">
+<div class="page__hero--overlay active" style="background-image: url('{{ bg_image }}')">
   <div class="wrapper">
     <h1 id="page-title" class="page__title" itemprop="headline">
       {{ site.title }}
@@ -54,6 +55,20 @@ feature_row:
     </p>
     <p>
       <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started</a>
+    </p>
+  </div>
+</div>
+<div class="page__hero--overlay" style="background-image: url('{{ bg_image }}')">
+  <div class="wrapper">
+    <h1 id="page-title" class="page__title" itemprop="headline">
+      {{ site.title }}
+    </h1>
+    <p class="page__lead">
+      dvancing algorithm design through large language models.<br />
+      <small>Automated solutions for complex computational problems</small>
+    </p>
+    <p>
+      <a href="{{ action }}" class="btn btn--light-outline btn--large">Get Started2</a>
     </p>
   </div>
 </div>
@@ -97,6 +112,10 @@ feature_row:
 </div>
 
 <style>
+.page__hero--overlay.active {
+  opacity: 1;
+}
+
 .publications-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -145,3 +164,27 @@ feature_row:
   font-size: 0.8rem;
 }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const backgrounds = document.querySelectorAll('.page__hero--overlay');
+    let current = 0;
+    
+    function rotateBackground() {
+      backgrounds[current].classList.remove('active');
+      current = (current + 1) % backgrounds.length;
+      backgrounds[current].classList.add('active');
+    }
+    
+    setInterval(rotateBackground, 5000);
+    
+    // Make backgrounds clickable
+    backgrounds.forEach(bg => {
+      bg.addEventListener('click', () => {
+        if(bg.dataset.link) {
+          window.location.href = bg.dataset.link;
+        }
+      });
+    });
+  });
+</script>
