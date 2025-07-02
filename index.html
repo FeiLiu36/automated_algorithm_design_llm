@@ -48,7 +48,7 @@ feature_row:
 
 <div class="page-banner">
   <div class="page__hero-backgrounds">
-    <!-- Slide 1 (Active) -->
+    <!-- Slide 1 -->
     <div class="page__hero--overlay active" style="background-image: url('{{ bg_image }}')">
       <div class="wrapper">
         <h1 id="page-title" class="page__title" itemprop="headline">
@@ -65,7 +65,7 @@ feature_row:
     </div>
     
     <!-- Slide 2 -->
-    <div class="page__hero--overlay" style="background-image: url('{{ bg_image1 }}')">
+    <div class="page__hero--overlay next" style="background-image: url('{{ bg_image1 }}')">
       <div class="wrapper">
         <h1 id="page-title" class="page__title" itemprop="headline">
           {{ site.title }}
@@ -141,11 +141,10 @@ feature_row:
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transform: translateX(100%);
-  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform;
 }
 
 .page__hero--overlay.active {
@@ -153,16 +152,13 @@ feature_row:
   z-index: 2;
 }
 
-/* Animation for sliding out */
-.page__hero--overlay.leaving {
-  transform: translateX(-100%);
-  transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+.page__hero--overlay.next {
+  transform: translateX(100%);
+  z-index: 1;
 }
 
-.page__hero--overlay .wrapper {
-  position: relative;
-  z-index: 3;
-  height: 100%;
+.page__hero--overlay.slide-out {
+  transform: translateX(-100%);
 }
 
 .publications-grid {
@@ -218,32 +214,43 @@ feature_row:
 document.addEventListener('DOMContentLoaded', function() {
   const slides = document.querySelectorAll('.page__hero--overlay');
   let currentSlide = 0;
-  const slideInterval = 5000; // 5 seconds
+  const slideInterval = 6000; // 6 seconds
+  
+  // Initialize - first slide visible, second ready to slide in from right
+  slides[0].classList.add('active');
+  slides[1].classList.add('next');
   
   function rotateSlides() {
-    // Mark current slide as leaving
-    slides[currentSlide].classList.add('leaving');
-    slides[currentSlide].classList.remove('active');
+    const activeSlide = slides[currentSlide];
+    const nextSlide = slides[(currentSlide + 1) % slides.length];
+    const followingSlide = slides[(currentSlide + 2) % slides.length];
     
-    // Move to next slide
-    currentSlide = (currentSlide + 1) % slides.length;
+    // Animate current slide out to left and next slide in from right
+    activeSlide.classList.add('slide-out');
+    nextSlide.classList.add('active');
+    nextSlide.classList.remove('next');
     
-    // Activate new slide
-    slides[currentSlide].classList.add('active');
+    // Prepare the slide after next to come in from right
+    followingSlide.classList.add('next');
+    followingSlide.style.transform = 'translateX(100%)';
     
-    // Reset leaving class after animation
+    // Reset states after animation completes
     setTimeout(() => {
-      document.querySelectorAll('.page__hero--overlay.leaving').forEach(slide => {
-        slide.classList.remove('leaving');
-      });
-    }, 1000);
+      activeSlide.classList.remove('active', 'slide-out');
+      activeSlide.style.transform = 'translateX(100%)';
+      
+      currentSlide = (currentSlide + 1) % slides.length;
+    }, 800); // Match duration with CSS transition
   }
   
-  // Initialize - ensure first slide is visible
-  slides[currentSlide].classList.add('active');
-  slides[currentSlide].style.transform = 'translateX(0)';
-  
   // Start rotation
-  setInterval(rotateSlides, slideInterval);
+  const rotation = setInterval(rotateSlides, slideInterval);
+  
+  // Pause on hover
+  const banner = document.querySelector('.page-banner');
+  banner.addEventListener('mouseenter', () => clearInterval(rotation));
+  banner.addEventListener('mouseleave', () => {
+    rotation = setInterval(rotateSlides, slideInterval);
+  });
 });
   </script>
